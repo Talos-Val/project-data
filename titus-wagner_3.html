@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projekte – Titus Wagner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&family=Syne+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0e0f11;
+      --surface: #16181c;
+      --border: #2a2d34;
+      --accent: #5de3a0;
+      --accent2: #f0c040;
+      --accent3: #e05c5c;
+      --accent4: #7eb8f7;
+      --accent5: #c084fc;
+      --text: #e8eaf0;
+      --muted: #7a7f8e;
+      --card1: #1a2a22;
+      --card2: #2a2216;
+      --card3: #1e1a2a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* NOISE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* GRID BACKGROUND */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: relative;
+      z-index: 1;
+      padding: 3rem 2.5rem 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .eyebrow {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 400;
+      line-height: 1.08;
+      margin-bottom: 1.4rem;
+      max-width: 700px;
+    }
+
+    h1 span {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 500px;
+      font-weight: 400;
+    }
+
+    .header-rule {
+      margin-top: 2.5rem;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 3rem 2.5rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2.2rem;
+    }
+
+    .section-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── CARDS ── */
+    .cards {
+      display: grid;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .card {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 1.8rem;
+      padding: 2rem 2.2rem;
+      background: var(--surface);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      animation: fadeUp 0.5s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.15s; }
+    .card:nth-child(2) { animation-delay: 0.25s; }
+    .card:nth-child(3) { animation-delay: 0.35s; }
+    .card:nth-child(4) { animation-delay: 0.45s; }
+    .card:nth-child(5) { animation-delay: 0.55s; }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.015));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover { background: var(--surface); }
+    .card:hover::after { opacity: 1; }
+
+    .card:hover .card-num { opacity: 1; }
+    .card:hover .card-arrow { transform: translateX(5px); }
+
+    /* card accent strips */
+    .card:nth-child(1) { border-left: 3px solid var(--accent); }
+    .card:nth-child(2) { border-left: 3px solid var(--accent2); }
+    .card:nth-child(3) { border-left: 3px solid var(--accent3); }
+    .card:nth-child(4) { border-left: 3px solid var(--accent4); }
+    .card:nth-child(5) { border-left: 3px solid var(--accent5); }
+
+    .card-num {
+      font-family: 'Syne Mono', monospace;
+      font-size: 1.8rem;
+      font-weight: 400;
+      opacity: 0.15;
+      transition: opacity 0.3s;
+      min-width: 2.5rem;
+      text-align: right;
+      line-height: 1;
+    }
+
+    .card:nth-child(1) .card-num { color: var(--accent); }
+    .card:nth-child(2) .card-num { color: var(--accent2); }
+    .card:nth-child(3) .card-num { color: var(--accent3); }
+    .card:nth-child(4) .card-num { color: var(--accent4); }
+    .card:nth-child(5) .card-num { color: var(--accent5); }
+
+    .card-body { min-width: 0; }
+
+    .card-tag {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 0.7rem;
+    }
+
+    .card:nth-child(1) .card-tag { color: var(--accent); background: rgba(93,227,160,0.08); border: 1px solid rgba(93,227,160,0.2); }
+    .card:nth-child(2) .card-tag { color: var(--accent2); background: rgba(240,192,64,0.08); border: 1px solid rgba(240,192,64,0.2); }
+    .card:nth-child(3) .card-tag { color: var(--accent3); background: rgba(224,92,92,0.08); border: 1px solid rgba(224,92,92,0.2); }
+    .card:nth-child(4) .card-tag { color: var(--accent4); background: rgba(126,184,247,0.08); border: 1px solid rgba(126,184,247,0.2); }
+    .card:nth-child(5) .card-tag { color: var(--accent5); background: rgba(192,132,252,0.08); border: 1px solid rgba(192,132,252,0.2); }
+
+    .card-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    .card-arrow {
+      font-size: 1.1rem;
+      color: var(--muted);
+      transition: transform 0.25s, color 0.25s;
+      flex-shrink: 0;
+    }
+
+    .card:hover .card-arrow { color: var(--text); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 1.5rem 2.5rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .copyright {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .copyright:hover {
+      color: var(--text);
+    }
+
+    .footer-note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    /* ANIMATION */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 560px) {
+      .card { grid-template-columns: 1fr auto; gap: 1rem; }
+      .card-num { display: none; }
+      header, main, footer { padding-left: 1.4rem; padding-right: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <p class="eyebrow">Titus Wagner · Projekte</p>
+    <h1>Meine <span>Projekte</span></h1>
+    <p class="subtitle">Eine Übersicht aller meiner Projekte – von interaktiven Tools über Lernmaterialien bis hin zu Quizzen.</p>
+    <div class="header-rule"></div>
+  </header>
+
+  <main>
+    <div class="section-header">
+      <span class="section-label">Projekte</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="cards">
+
+      <a class="card" href="https://talos-val.github.io/sexting-flyer" target="_blank" rel="noopener">
+        <span class="card-num">01</span>
+        <div class="card-body">
+          <span class="card-tag">Flyer · Aufklärung</span>
+          <div class="card-title">Sexting – Was du wissen solltest</div>
+          <p class="card-desc">
+            Informationsflyer zu Risiken und rechtlichen Folgen beim Versenden intimer Bilder und Nachrichten. Klärt auf über Grenzen, Konsequenzen und wie man sich schützen kann.
+          </p>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://talos-val.github.io/cybergrooming-flyer" target="_blank" rel="noopener">
+        <span class="card-num">02</span>
+        <div class="card-body">
+          <span class="card-tag">Flyer · Prävention</span>
+          <div class="card-title">Cybergrooming – Gefahren im Netz</div>
+          <p class="card-desc">
+            Erklärt, wie Erwachsene online gezielt Vertrauen bei Kindern und Jugendlichen aufbauen, um sie zu manipulieren. Mit konkreten Warnzeichen und Handlungsempfehlungen.
+          </p>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://talos-val.github.io/gaming-quiz" target="_blank" rel="noopener">
+        <span class="card-num">03</span>
+        <div class="card-body">
+          <span class="card-tag">Quiz · Interaktiv</span>
+          <div class="card-title">Gaming &amp; Online-Sicherheit Quiz</div>
+          <p class="card-desc">
+            Interaktives Quiz rund um sicheres Verhalten in Gaming-Communities. Testet Wissen zu Datenschutz, Umgang mit Fremden und dem Erkennen problematischer Situationen.
+          </p>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://talos-val.github.io/lat-dekl" target="_blank" rel="noopener">
+        <span class="card-num">04</span>
+        <div class="card-body">
+          <span class="card-tag">Lernhilfe · Latein</span>
+          <div class="card-title">Lateinische Deklinationen</div>
+          <p class="card-desc">
+            Interaktive Übersicht und Lernhilfe zu den lateinischen Deklinationsformen. Ideal zum Üben und Nachschlagen der Kasusendungen aller Deklinationsklassen.
+          </p>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+      <a class="card" href="https://talos-val.github.io/ai-ethic" target="_blank" rel="noopener">
+        <span class="card-num">05</span>
+        <div class="card-body">
+          <span class="card-tag">Expertenarbeit · KI</span>
+          <div class="card-title">Grenzen der KI – Was darf eine KI nicht?</div>
+          <p class="card-desc">
+            Interaktive Aufbereitung der Expertenarbeit zu ethischen Grenzen künstlicher Intelligenz. Themen: Totenchats, KI im Krieg und Roboter in der Altenpflege.
+          </p>
+        </div>
+        <span class="card-arrow">→</span>
+      </a>
+
+    </div>
+  </main>
+
+  <footer>
+    <a class="copyright" href="https://talos-val.github.io/database" target="_blank" rel="noopener">© 2025 Titus Wagner</a>
+    <span class="footer-note">Alle Projekte zur freien Nutzung mit Nennung des Urhebers.</span>
+  </footer>
+
+
+
+</body>
+</html>
